@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Campaigns</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        .animate-slideIn {
+            animation: slideIn 0.8s ease-out forwards;
+        }
+        .hover-scale {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+        }
+        .hover-pulse:hover {
+            animation: pulse 0.5s ease-in-out;
+        }
+        tr.animate-fadeIn {
+            animation-delay: calc(var(--row-index, 0) * 0.1s);
+        }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f6f6f6;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    .search-sort {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-sort input,
+    .search-sort select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .campaign-list {
+      background-color: #fff;
+      border-radius: 6px;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .campaign-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .campaign-row:last-child {
+      border-bottom: none;
+    }
+
+    .campaign-title {
+      font-weight: bold;
+    }
+
+    .campaign-actions a {
+      margin-left: 15px;
+      text-decoration: none;
+      color: #007c89;
+    }
+
+    .campaign-actions a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- <h2>All Campaigns</h2>
+
+  <div class="search-sort">
+    <input type="text" id="searchInput" placeholder="Search campaigns..." onkeyup="filterCampaigns()" />
+    <select id="typeFilter" onchange="filterCampaigns()">
+      <option value="">Type: All</option>
+      <option value="email">Email</option>
+      <option value="social">Social</option>
+    </select>
+    <select id="statusFilter" onchange="filterCampaigns()">
+      <option value="">Status: All</option>
+      <option value="Sent">Sent</option>
+      <option value="Scheduled">Scheduled</option>
+    </select>
+    <select id="folderFilter" onchange="filterCampaigns()">
+      <option value="">Folder: All</option>
+      <option value="Welcome">Welcome</option>
+      <option value="Product">Product</option>
+    </select>
+    <select id="sortBy" onchange="sortCampaigns()">
+      <option value="date-desc">Sort by: Date edited ▼</option>
+      <option value="date-asc">Sort by: Date edited ▲</option>
+    </select>
+  </div> -->
+
+
+
+  <a href="{% url 'audience_dashboard' %}" class="absolute top-4 right-4 text-white hover:text-gray-200 bg-gradient-to-br from-[#667eea] to-[#764ba2] hover:from-[#5a6ed3] hover:to-[#6b4294] px-4 py-2 rounded-lg font-semibold text-base transition-all duration-300 hover-scale hover-pulse animate-slideIn shadow-md">Dashboard</a>
+    <div class="w-full max-w-6xl mx-auto px-8 py-12 mt-12">
+        <h2 class="text-3xl font-bold text-black mb-8 text-center animate-fadeIn">Sent Email Details</h2>
+        <div class="overflow-x-auto bg-gray-100 rounded-xl shadow-md">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gradient-to-br from-[#667eea] to-[#764ba2] text-black">
+                        <th class="p-4 text-left font-semibold text-lg rounded-tl-xl">Recipient Name</th>
+                        <th class="p-4 text-left font-semibold text-lg">Email</th>
+                        <th class="p-4 text-left font-semibold text-lg">Subject</th>
+                        <th class="p-4 text-left font-semibold text-lg">Message</th>
+                        <th class="p-4 text-left font-semibold text-lg rounded-tr-xl">Sent At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for email in campaign_mails %}
+                        <tr class="text-gray-800 border-b border-gray-200 hover:bg-gray-50 transition-colors duration-300 animate-fadeIn" style="--row-index: {{ forloop.counter0 }};">
+                            <td class="p-4">{{ email.recipient_name }}</td>
+                            <td class="p-4">{{ email.recipient_email }}</td>
+                            <td class="p-4">{{ email.subject }}</td>
+                            <td class="p-4 max-w-xs truncate">{{ email.message }}</td>
+                            <td class="p-4">{{ email.sent_at|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr class="text-gray-800 animate-fadeIn">
+                            <td colspan="5" class="p-4 text-center text-lg">No emails sent yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{% url 'audience_dashboard' %}" class="block mt-10 text-white px-6 py-4 rounded-xl bg-gradient-to-br from-[#667eea] to-[#764ba2] hover:from-[#5a6ed3] hover:to-[#6b4294] hover-scale hover-pulse animate-slideIn text-lg font-semibold text-center max-w-xs mx-auto shadow-lg">Go to Dashboard</a>
+    </div>
+ 
+
+  <script>
+   
+    function filterCampaigns() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const type = document.getElementById('typeFilter').value;
+      const status = document.getElementById('statusFilter').value;
+      const folder = document.getElementById('folderFilter').value;
+
+      const filtered = campaigns.filter(c => {
+        return (
+          c.title.toLowerCase().includes(search) &&
+          (type === "" || c.type === type) &&
+          (status === "" || c.status === status) &&
+          (folder === "" || c.folder === folder)
+        );
+      });
+
+      renderCampaigns(filtered);
+    }
+
+    function sortCampaigns() {
+      const sort = document.getElementById('sortBy').value;
+      const filtered = [...campaigns];
+
+      filtered.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return sort === "date-asc" ? dateA - dateB : dateB - dateA;
+      });
+
+      renderCampaigns(filtered);
+    }
+
+    // Initial render
+    renderCampaigns(campaigns);
+  </script>
+
+</body>
+</html>

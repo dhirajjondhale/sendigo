@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tag Your Contacts</title>
+    <style>
+        :root {
+            --primary: #007c89;
+            --bg: #f8f9fa;
+            --border: #ddd;
+            --text-dark: #333;
+            --text-light: #666;
+            --tag-bg: #eef5f7;
+            --tag-hover: #dceff2;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            padding: 40px;
+            color: var(--text-dark);
+        }
+
+        /* Header styling */
+        header {
+            position: relative;
+            padding: 10px;
+        }
+
+        h2 {
+            color: var(--primary);
+        }
+
+        p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin-top: 30px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .form-section {
+            margin-top: 25px;
+        }
+
+        .tag-box {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--tag-bg);
+            color: var(--text-dark);
+            margin: 6px 6px 0 0;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            transition: background-color 0.2s ease;
+        }
+
+        .tag-box:hover {
+            background-color: var(--tag-hover);
+        }
+
+        button[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #005f6f;
+        }
+
+        /* Style for the Back button */
+        .back-btn {
+            position: absolute;   /* Positioning it inside header */
+            top: 10px;            /* Align it to the top */
+            right: 10px;          /* Align it to the right edge */
+            padding: 10px 20px;
+            background-color: #ccc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section -->
+    <header>
+        <form action="{% url 'audience_dashboard' %}" method="get">
+            <button type="submit" class="back-btn">Back</button>
+        </form>
+    </header>
+
+    <h2>Tag Your Contacts</h2>
+    <p>Easily organize your contacts using simple words or phrases that make the most sense to you.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-section">
+            <label for="tag_name"><strong>Search for or Create Tags</strong></label><br>
+            <input type="text" name="tag_name" id="tag_name" placeholder="Start typing to add a custom tag" />
+        </div>
+
+        <div class="form-section">
+            <strong>Choose from popular tags</strong><br>
+            {% for tag in tags %}
+                <span class="tag-box" onclick="document.getElementById('tag_name').value='{{ tag.name }}'">
+                    {{ tag.name }}
+                </span>
+            {% empty %}
+                <p style="color: var(--text-light);">No tags available.</p>
+            {% endfor %}
+        </div>
+
+        <div class="form-section">
+            <button type="submit">Continue to Match</button>
+        </div>
+    </form>
+</body>
+</html>

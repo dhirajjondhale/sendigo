@@ -1,0 +1,65 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Campaign Details - {{ campaign.title }}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f6f6f6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .campaign-details {
+      background-color: #fff;
+      border-radius: 6px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 40px auto;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    p {
+      line-height: 1.6;
+      color: #555;
+    }
+
+    .back-button {
+      margin-top: 20px;
+      display: inline-block;
+      padding: 10px 18px;
+      background-color: #007c89;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .back-button:hover {
+      background-color: #005f63;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="campaign-details">
+    <h2>Campaign Details</h2>
+    <p><strong>Title:</strong> {{ campaign.title }}</p>
+    <p><strong>Status:</strong> {{ campaign.status }}</p>
+    <p><strong>Date:</strong> {{ campaign.date }}</p>
+    <p><strong>Type:</strong> {{ campaign.type }}</p>
+    <p><strong>Folder:</strong> {{ campaign.folder }}</p>
+
+    <a class="back-button" href="{% url 'all_campaigns' %}">← Back to All Campaigns</a>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Survey Page - Audience</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #F4F7FA;
+      color: #2C3E50;
+      line-height: 1.6;
+    }
+    .container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: #F8F8F8;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      background-color: #fff;
+    }
+    .sidebar h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+    .sidebar .section h4 {
+      margin-bottom: 10px;
+      color: #555;
+    }
+    .sidebar ul {
+      list-style: none;
+    }
+    .sidebar ul li {
+      padding: 8px 0;
+      color: #333;
+      cursor: pointer;
+    }
+    .sidebar ul li.active {
+      font-weight: bold;
+      color: #3498DB;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .top-bar input[type="text"] {
+      padding: 10px;
+      width: 60%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .top-bar select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .alert {
+      background-color: #E8F4FD;
+      border-left: 5px solid #3498DB;
+      padding: 15px;
+      margin-bottom: 25px;
+      position: relative;
+    }
+    .alert .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    .survey-form-section {
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    .survey-form-section h2 {
+      color: #2C3E50;
+      margin-bottom: 20px;
+    }
+    .survey-form-section form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .survey-form-section form label {
+      font-weight: bold;
+    }
+    .survey-form-section form input[type="text"],
+    .survey-form-section form input[type="email"],
+    .survey-form-section form textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .survey-form-section form textarea {
+      height: 100px;
+    }
+    .button {
+      background-color: #3498DB;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .button:hover {
+      background-color: #2980B9;
+    }
+    input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .main-content {
+        width: 100%;
+      }
+      .top-bar {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .top-bar input[type="text"],
+      .top-bar select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <aside class="sidebar">
+    <h3>Feedback</h3>
+    <div class="section">
+      <h4>Categories</h4>
+      <ul>
+        <li class="active">Feedback Form</li>
+        <!-- Make Completed a link -->
+        <li>
+          <a href="{% url 'complete_feedback' %}" style="text-decoration: none; color: inherit;">
+            Completed
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+    <main class="main-content">
+      <!-- <div class="top-bar">
+        <input type="text" placeholder="Search by name or type" />
+        <select>
+          <option>Last updated</option>
+          <option>Name A–Z</option>
+          <option>Name Z–A</option>
+        </select>
+      </div> -->
+      <div class="alert">
+        <p><strong>We value your feedback!</strong><br/>
+          Please take a moment to complete this Feedback to help us improve our services.
+        </p>
+        <span class="close" onclick="this.parentElement.style.display='none'">×</span>
+      </div>
+      <div class="survey-form-section">
+        <h2>Feedback Form</h2>
+        <form method="POST" class="p-4">
+          {% csrf_token %}
+          <div class="mb-3">
+              <label for="id_name" class="form-label"><strong>Your Name:</strong></label>
+              <input type="text" name="name" id="id_name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+              <label for="id_email" class="form-label"><strong>Your Email:</strong></label>
+              <input type="email" name="email" id="id_email" class="form-control" required>
+          </div>
+          <div class="mb-3">
+              <label for="id_feedback" class="form-label"><strong>Your Feedback:</strong></label>
+              <textarea name="feedback" id="id_feedback" class="form-control" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Submit</button>
+      </form>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Email Recipients</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <a href="{% url 'audience_dashboard' %}" type="submit" class="btn btn-primary" style="      top: 4vh;position: relative;
+left: 87vw;  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">Back To dashboard</a>
+    <div class="container mt-5">
+        <h1>Add Email Recipients</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}danger{% else %}info{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <form method="post" class="mb-4">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary" style="    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">Add Recipient</button>
+        </form>
+        <h2>Recipients</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <!-- <th>Sent</th> -->
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for recipient in recipients %}
+                    <tr>
+                        <td>{{ recipient.name }}</td>
+                        <td>{{ recipient.email }}</td>
+                        <!-- <td>{{ recipient.sent|yesno:"Yes,No" }}</td> -->
+                        <td>
+                            <a href="{% url 'edit_recipient' recipient.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                            <form method="post" action="{% url 'delete_recipient' recipient.pk %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this recipient?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No recipients added.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'send_emails' %}" class="btn btn-success">Go to Send Emails</a>
+    </div>
+</body>
+</html>

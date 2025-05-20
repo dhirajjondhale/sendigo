@@ -1,0 +1,234 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="{% static 'emailtool/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Tighten form container */
+        .auth-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            box-sizing: border-box;
+        }
+
+        /* Compact form styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem; /* Reduced gap between form groups */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Form group styling */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem; /* Minimal gap within form group */
+            margin: 0;
+        }
+
+        /* Labels and inputs */
+        .form-group label {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-group input {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 0;
+        }
+
+        /* Validation messages */
+        .validation-message {
+            margin-top: 0.25rem;
+            font-size: 0.8rem;
+        }
+
+        .validation-rule {
+            margin: 0;
+            padding: 0;
+            color: #666;
+        }
+
+        .validation-rule.invalid {
+            color: #e74c3c;
+        }
+
+        .form-group.has-error input {
+            border-color: #e74c3c;
+        }
+
+        /* Submit button */
+        button[type="submit"] {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background-color: #052659; /* Match primary color from landing page */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #041d44;
+        }
+
+        /* Login link */
+        .auth-container p {
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .auth-container p a {
+            color: #052659;
+            text-decoration: underline;
+        }
+
+        .auth-container p a:hover {
+            color: #e46c00; /* Match secondary color from landing page */
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Sign Up</h2>
+        <form method="POST" id="signupForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">Username:</label>
+                <input type="text" name="username" id="id_username" required>
+                <div class="validation-message" id="username-validation">
+                    <p class="validation-rule" data-rule="length">Required. 150 characters or fewer.</p>
+                    <p class="validation-rule" data-rule="chars">Letters, digits and @/./+/-/_ only.</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                <input type="email" name="email" id="id_email" required>
+                <div class="validation-message" id="email-validation">
+                    <p class="validation-rule" data-rule="email">Enter a valid email address.</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password1">Password:</label>
+                <input type="password" name="password1" id="id_password1" required>
+                <div class="validation-message" id="password-validation">
+                    <p class="validation-rule" data-rule="similar">Password can't be too similar to personal information.</p>
+                    <p class="validation-rule" data-rule="length">Password must contain at least 8 characters.</p>
+                    <p class="validation-rule" data-rule="common">Password can't be commonly used.</p>
+                    <p class="validation-rule" data-rule="numeric">Password can't be entirely numeric.</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password2">Confirm Password:</label>
+                <input type="password" name="password2" id="id_password2" required>
+                <div class="validation-message" id="confirm-validation">
+                    <p class="validation-rule" data-rule="match">Passwords must match.</p>
+                </div>
+            </div>
+            
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
+    
+    <script>
+        $(document).ready(function() {
+            // Username validation
+            $('#id_username').on('input blur', function() {
+                const username = $(this).val();
+                const formGroup = $(this).closest('.form-group');
+                const usernameRules = $('#username-validation .validation-rule');
+                let hasError = false;
+                
+                if (username) {
+                    if (username.length > 150) {
+                        $('#username-validation .validation-rule[data-rule="length"]').addClass('invalid');
+                        hasError = true;
+                    }
+                    if (!/^[\w.@+-]+$/.test(username)) {
+                        $('#username-validation .validation-rule[data-rule="chars"]').addClass('invalid');
+                        hasError = true;
+                    }
+                }
+                
+                formGroup.toggleClass('has-error', hasError);
+                if (!hasError) {
+                    usernameRules.removeClass('invalid');
+                }
+            });
+            
+            // Email validation
+            $('#id_email').on('input blur', function() {
+                const email = $(this).val();
+                const formGroup = $(this).closest('.form-group');
+                const emailRule = $('#email-validation .validation-rule');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                const hasError = email && !emailRegex.test(email);
+                formGroup.toggleClass('has-error', hasError);
+                emailRule.toggleClass('invalid', hasError);
+            });
+            
+            // Password validation
+            $('#id_password1').on('input blur', function() {
+                const password = $(this).val();
+                const formGroup = $(this).closest('.form-group');
+                const passwordRules = $('#password-validation .validation-rule');
+                let hasError = false;
+                
+                if (password) {
+                    if (password.length < 8) {
+                        $('#password-validation .validation-rule[data-rule="length"]').addClass('invalid');
+                        hasError = true;
+                    }
+                    if (/^\d+$/.test(password)) {
+                        $('#password-validation .validation-rule[data-rule="numeric"]').addClass('invalid');
+                        hasError = true;
+                    }
+                }
+                
+                formGroup.toggleClass('has-error', hasError);
+                if (!hasError) {
+                    passwordRules.removeClass('invalid');
+                }
+            });
+            
+            // Confirm password validation
+            $('#id_password2').on('input blur', function() {
+                const password1 = $('#id_password1').val();
+                const password2 = $(this).val();
+                const formGroup = $(this).closest('.form-group');
+                const confirmRule = $('#confirm-validation .validation-rule');
+                
+                const hasError = password2 && password1 !== password2;
+                formGroup.toggleClass('has-error', hasError);
+                confirmRule.toggleClass('invalid', hasError);
+            });
+            
+            // Clear validation messages when field is empty
+            $('input').on('input', function() {
+                if (!$(this).val()) {
+                    const formGroup = $(this).closest('.form-group');
+                    formGroup.removeClass('has-error');
+                    formGroup.find('.validation-rule').removeClass('invalid');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

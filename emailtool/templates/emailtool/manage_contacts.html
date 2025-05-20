@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Contact</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #F5F7FA 0%, #C3CFE2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        h2 {
+            text-align: center;
+            color: #1A202C;
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4A5568;
+            margin-bottom: 0.5rem;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #2D3748;
+            background-color: #fff;
+            border: 1px solid #E2E8F0;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4299E1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: white;
+            background: linear-gradient(to right, #4299E1, #667EEA);
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 2rem;
+        }
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #4A5568;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #2D3748;
+        }
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+        /* Error states */
+        .errorlist {
+            list-style: none;
+            color: #E53E3E;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        input.error {
+            border-color: #E53E3E;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Contact</h2>
+        {% if form.errors %}
+        <div class="errorlist">
+            Please correct the errors below.
+        </div>
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_email">Email Address *</label>
+                <input type="email" name="email" id="id_email" class="form-control" required
+                    value="{{ add_contact.email.value|default_if_none:'' }}">
+                {% if add_contact.email.errors %}
+                <ul class="errorlist">{{ add_contact.email.errors }}</ul>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_first_name">First Name</label>
+                <input type="text" name="first_name" id="id_first_name" class="form-control"
+                    value="{{ add_contact.first_name.value|default_if_none:'' }}">
+                {% if add_contact.first_name.errors %}
+                <ul class="errorlist">{{ add_contact.first_name.errors }}</ul>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_last_name">Last Name</label>
+                <input type="text" name="last_name" id="id_last_name" class="form-control"
+                    value="{{ add_contact.last_name.value|default_if_none:'' }}">
+                {% if add_contact.last_name.errors %}
+                <ul class="errorlist">{{ add_contact.last_name.errors }}</ul>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_phone">Phone</label>
+                <input type="text" name="phone" id="id_phone" class="form-control"
+                    value="{{ add_contact.phone.value|default_if_none:'' }}">
+                {% if add_contact.phone.errors %}
+                <ul class="errorlist">{{ add_contact.phone.errors }}</ul>
+                {% endif %}
+            </div>
+            <button type="submit">{% if add_contact.instance.pk %}Update{% else %}Add{% endif %} Contact</button>
+        </form>
+        <a class="back-link" href="{% url 'audiencepage1' %}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                    d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                    clip-rule="evenodd" />
+            </svg>
+            Back to List
+        </a>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

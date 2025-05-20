@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sent Email Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        .animate-slideIn {
+            animation: slideIn 0.8s ease-out forwards;
+        }
+        .hover-scale {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+        }
+        .hover-pulse:hover {
+            animation: pulse 0.5s ease-in-out;
+        }
+        tr.animate-fadeIn {
+            animation-delay: calc(var(--row-index, 0) * 0.1s);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start font-sans bg-white">
+    <a href="{% url 'logout' %}" class="absolute top-4 right-4 text-white hover:text-gray-200 bg-gradient-to-br from-[#667eea] to-[#764ba2] hover:from-[#5a6ed3] hover:to-[#6b4294] px-4 py-2 rounded-lg font-semibold text-base transition-all duration-300 hover-scale hover-pulse animate-slideIn shadow-md">Logout</a>
+    <div class="w-full max-w-6xl mx-auto px-8 py-12 mt-12">
+        <h2 class="text-3xl font-bold text-black mb-8 text-center animate-fadeIn">Sent Email Details</h2>
+        <div class="overflow-x-auto bg-gray-100 rounded-xl shadow-md">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gradient-to-br from-[#667eea] to-[#764ba2] text-black">
+                        <th class="p-4 text-left font-semibold text-lg rounded-tl-xl">Recipient Name</th>
+                        <th class="p-4 text-left font-semibold text-lg">Email</th>
+                        <th class="p-4 text-left font-semibold text-lg">Subject</th>
+                        <th class="p-4 text-left font-semibold text-lg">Message</th>
+                        <th class="p-4 text-left font-semibold text-lg rounded-tr-xl">Sent At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for email in sent_emails %}
+                        <tr class="text-gray-800 border-b border-gray-200 hover:bg-gray-50 transition-colors duration-300 animate-fadeIn" style="--row-index: {{ forloop.counter0 }};">
+                            <td class="p-4">{{ email.recipient_name }}</td>
+                            <td class="p-4">{{ email.recipient_email }}</td>
+                            <td class="p-4">{{ email.subject }}</td>
+                            <td class="p-4 max-w-xs truncate">{{ email.message }}</td>
+                            <td class="p-4">{{ email.sent_at|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr class="text-gray-800 animate-fadeIn">
+                            <td colspan="5" class="p-4 text-center text-lg">No emails sent yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{% url 'audience_dashboard' %}" class="block mt-10 text-white px-6 py-4 rounded-xl bg-gradient-to-br from-[#667eea] to-[#764ba2] hover:from-[#5a6ed3] hover:to-[#6b4294] hover-scale hover-pulse animate-slideIn text-lg font-semibold text-center max-w-xs mx-auto shadow-lg">Go to Dashboard</a>
+    </div>
+</body>
+</html>

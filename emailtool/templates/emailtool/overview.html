@@ -1,0 +1,146 @@
+{% load static %}
+<!-- emailtool/templates/emailtool/overview.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Audience Dashboard</title>
+  <style>
+    :root {
+      --primary: #007c89;
+      --bg: #f4f6f8;
+      --card-bg: #ffffff;
+      --text-dark: #333;
+      --text-light: #666;
+      --border: #ddd;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: var(--bg);
+      color: var(--text-dark);
+    }
+    .dashboard {
+      max-width: 1000px;
+      margin: auto;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+      padding: 30px;
+    }
+    h1, h2 {
+      color: var(--primary);
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 24px;
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+    p {
+      color: var(--text-light);
+      margin-bottom: 30px;
+    }
+    .stats, .metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .card, .stat-box, .metric {
+      flex: 1;
+      min-width: 180px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover, .stat-box:hover, .metric:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    }
+    .card strong, .stat-box h2, .metric p {
+      font-size: 28px;
+      color: var(--primary);
+      margin: 0;
+    }
+    .card small, .stat-box p, .metric span {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-top: 8px;
+      display: block;
+    }
+    .placeholder {
+      background: #e6ebf1;
+      height: 150px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-light);
+      font-size: 16px;
+      border: 1px dashed var(--border);
+    }
+    @media (max-width: 600px) {
+      .stats, .metrics {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <h1>Audience: Zareen</h1>
+    <p>1 total contact, 1 email subscriber.</p>
+
+    <h2>Overview</h2>
+    <div class="stats">
+      <div class="stat-box">
+        <h2>1</h2>
+        <p>Subscribed Contacts</p>
+      </div>
+      <!-- <div class="stat-box">
+        <h2>0</h2>
+        <p>Non-subscribed Contacts</p>
+      </div> -->
+      <div class="stat-box">
+        <h2>0</h2>
+        <p>Unsubscribed Contacts</p>
+      </div>
+      <!-- <div class="stat-box">
+        <h2>0</h2>
+        <p>Cleaned Contacts</p>
+      </div> -->
+    </div>
+
+    <h2>Audience Performance</h2>
+    <div class="metrics">
+      <div class="metric">
+        <p>0%</p>
+        <span>Average Open Rate</span>
+      </div>
+      <div class="metric">
+        <p>0%</p>
+        <span>Average Click Rate</span>
+      </div>
+      <div class="metric">
+        <p>0.0%</p>
+        <span>Average Subscribe Rate</span>
+      </div>
+      <div class="metric">
+        <p>0.0%</p>
+        <span>Average Unsubscribe Rate</span>
+      </div>
+    </div>
+
+    <h2>Audience Growth</h2>
+    <div class="placeholder">No growth data for this period</div>
+  </div>
+</body>
+</html>

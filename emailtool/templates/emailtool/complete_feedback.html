@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Completed Feedback</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #F4F7FA;
+      padding: 20px;
+    }
+    h2 {
+      color: #2C3E50;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #3498DB;
+      color: white;
+    }
+    tr:hover {
+      background-color: #F1F1F1;
+    }
+    .no-data {
+      background: #FFF3CD;
+      padding: 15px;
+      border-left: 5px solid #FFC107;
+    }
+  </style>
+</head>
+<body>
+  <h2>Submitted Feedback</h2>
+  {% if feedbacks %}
+    <table>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Feedback</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fb in feedbacks %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ fb.name }}</td>
+          <td>{{ fb.email }}</td>
+          <td>{{ fb.feedback }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="no-data">
+      <strong>No feedback found.</strong> Please submit a response first.
+    </div>
+  {% endif %}
+<div>  <a href="{% url 'feedback' %}" class="btn btn-primary">Go Back</a>
+</div>
+</body>
+</html>

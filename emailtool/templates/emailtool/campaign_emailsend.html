@@ -1,0 +1,216 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mailchimp Campaign Builder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f6f6f6;
+      color: #333;
+    }
+
+    header {
+      background-color: #fff;
+      padding: 15px 30px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h2, header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .status {
+      font-size: 14px;
+      color: #666;
+      background-color: #e0e0e0;
+      padding: 3px 8px;
+      border-radius: 12px;
+      margin-left: 10px;
+    }
+
+    nav button, .header-btns button, .btn.small {
+      margin-left: 10px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .primary, .header-btns button:not(.secondary) {
+      background-color: #007c89;
+      color: white;
+    }
+
+    .secondary, nav button:not(.primary) {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+
+    .campaign-container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px 30px;
+    }
+
+    .campaign-container h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .edit-name {
+      font-size: 13px;
+      margin-top: -8px;
+      margin-bottom: 15px;
+      display: inline-block;
+      color: #007c89;
+      cursor: pointer;
+    }
+
+    .campaign-block {
+      margin-top: 25px;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #dcdcdc;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .campaign-block h4 {
+      margin-top: 0;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .campaign-block p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .campaign-block a {
+      color: #007c89;
+      text-decoration: none;
+    }
+
+    .note span {
+      color: red;
+    }
+
+    .preview {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .preview img {
+      max-width: 300px;
+      border: 1px solid #ccc;
+    }
+
+    .test-email {
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    .test-email a {
+      color: #007c89;
+    }
+
+    .notes {
+      margin-top: 25px;
+      font-size: 14px;
+      color: #555;
+      background-color: #fff;
+      border: 1px solid #dcdcdc;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .notes p {
+      margin: 8px 0;
+    }
+
+    .notes a {
+      color: #007c89;
+      text-decoration: none;
+    }
+
+    .footer-link {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .footer-link a {
+      color: #007c89;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Campaign Builder <span class="status">Draft</span></h1>
+  <div class="header-btns">
+    <button class="secondary">Finish Later</button>
+    <button class="secondary">Schedule</button>
+    <button>Send</button>
+  </div>
+</header>
+
+<section class="campaign-container">
+  <h3>Keep it up! <span class="status">Draft</span></h3>
+  <div class="edit-name">Edit Campaign Name</div>
+
+  <div class="campaign-block">
+    <h4>To</h4>
+    <p>Sending to all <a href="#">2 recipients</a> in the audience <strong>WsCube Tech</strong>.</p>
+    <p class="note">Your 'To' field is <span>not personalized</span> with merge tags.</p>
+    <p><a href="#">Edit your recipients</a></p>
+    <button class="btn small">Edit Recipients</button>
+  </div>
+
+  <div class="campaign-block">
+    <h4>From</h4>
+    <p>WsCube Tech • gadshindiwscubetech@gmail.com</p>
+    <button class="btn small">Edit From</button>
+  </div>
+
+  <div class="campaign-block">
+    <h4>Subject</h4>
+    <p>Welcome to WsCubeTech</p>
+    <button class="btn small">Edit Subject</button>
+  </div>
+
+  <div class="campaign-block">
+    <h4>Content</h4>
+    <p>Design the content for your email.</p>
+    <div class="preview">
+      <img src="https://via.placeholder.com/300x180.png?text=Welcome+to+WsCube+Tech" alt="Email Preview">
+      <div class="test-email"><a href="#">Send a Test Email</a></div>
+    </div>
+    <button class="btn small" style="margin-top: 10px;">Edit Design</button>
+  </div>
+
+  <div class="notes">
+    <p>⚠ We automatically add a required Referral badge to your email footer. To remove the badge, <a href="#">upgrade your account</a>.</p>
+    <p>📎 We’ll insert a footer in compliance with our <a href="#">Terms of Use</a>.</p>
+    <p>✅ A plain-text version of this email will be included automatically. <a href="#">Edit</a></p>
+    <div class="footer-link"><a href="#">Enable Social Cards</a></div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audience Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+    .hover-scale {
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+    .hover-scale:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+    }
+    .hover-pulse:hover {
+        animation: pulse 0.5s ease-in-out;
+    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25);
+        }
+        .gradient-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        .gradient-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen font-inter text-gray-900 antialiased">
+
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <div class="w-64 bg-gradient-to-b from-white to-gray-50 p-6 border-r border-gray-200 shadow-sm flex-shrink-0 flex flex-col gap-2">
+    <a href="{% url 'emailtemplate' %}" class="flex items-center justify-center bg-gradient-to-br from-[#667eea] to-[#764ba2] border border-gray-200 rounded-lg py-3 px-4 text-sm font-semibold text-white hover:bg-gray-100 hover:border-blue-600 hover:-translate-y-0.5 transition-all">
+      <i class="fas fa-plus mr-2 text-white-600 "></i> Create
+    </a>
+
+    <div class="sidebar-item" id="audience-menu">
+      <a onclick="toggleSubmenu(this)" class="flex items-center justify-between py-3 px-4 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-all">
+        <span class="flex items-center"><i class="fas fa-users mr-3 text-gray-500"></i> Campaigns</span>
+        <i class="fa fa-chevron-down text-xs transition-transform"></i>
+      </a>
+      <ul class="submenu hidden pl-7 mt-2 space-y-2">
+        <li><a href="{% url 'all_campaigns' %}" class="block py-2 px-3 text-xs font-normal text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded transition-all">All campaigns</a></li>
+        <li><a href="{% url 'emailtemplate' %}" class="block py-2 px-3 text-xs font-normal text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded transition-all">Email templates</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-item" id="audience-menu">
+      <a onclick="toggleSubmenu(this)" class="flex items-center justify-between py-3 px-4 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-all">
+        <span class="flex items-center"><i class="fas fa-users mr-3 text-gray-500"></i> Audience</span>
+        <i class="fa fa-chevron-down text-xs transition-transform"></i>
+      </a>
+      <ul class="submenu hidden pl-7 mt-2 space-y-2">
+        <li><a href="{% url 'audiencepage' %}" class="block py-2 px-3 text-xs font-normal text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded transition-all">Audience Dashboard</a></li>
+        <li><a href="{% url 'all_contacts' %}" class="block py-2 px-3 text-xs font-normal text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded transition-all">All Contacts</a></li>
+        <!-- <li><a href="{% url 'signup' %}" class="block py-2 px-3 text-xs font-normal text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded transition-all">Signup forms</a></li>
+        <li><a href="{% url 'tags' %}" class="block py-2 px-3 text-xs font-normal text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded transition-all">Tags</a></li>
+        <li><a href="{% url 'create_segment' %}" class="block py-2 px-3 text-xs font-normal text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded transition-all">Segments</a></li>
+        <li><a href="{% url 'survey' %}" class="block py-2 px-3 text-xs font-normal text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded transition-all">Survey</a></li> -->
+      <li><a href="{% url 'feedback' %}" class="block py-2 px-3 text-xs font-normal text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded transition-all">Feedback</a></li>
+      </ul>
+    </div>
+
+    <!-- <div class="sidebar-item">
+      <a href="#" class="flex items-center py-3 px-4 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-all">
+        <i class="fas fa-chart-bar mr-3 text-gray-500"></i> Analytics
+      </a>
+    </div> -->
+
+    <div class="sidebar-item">
+      <a href="{% url 'add_recipients' %}" class="flex items-center py-3 px-4 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-all">
+        <i class="fas fa-envelope mr-3 text-gray-500"></i> BulkMailer
+      </a>
+    </div>
+
+
+   
+    <div class="sidebar-item">
+      <a href="{% url 'logout' %}" class="flex items-center py-3 px-4  text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-all">
+        <i class="fas fa-sign-out-alt mr-3 text-gray-500"></i> Logout
+      </a>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="flex-1 p-12 overflow-y-auto ">
+  <a href="{% url 'logout' %}" class="absolute top-4 right-4 text-white hover:text-gray-200 bg-gradient-to-br from-[#667eea] to-[#764ba2] hover:from-[#5a6ed3] hover:to-[#6b4294] px-4 py-2 rounded-lg font-semibold text-base transition-all duration-300 hover-scale hover-pulse animate-fadeIn shadow-md">Logout</a>
+    <div class="flex flex-col items-center justify-center min-h-[80vh] text-center">
+      <div class="w-full max-w-5xl mx-auto px-4 py-8">
+        <h1 class="text-5xl font-bold text-gray-900 mb-8">Grow Your Audience</h1>
+        <p class="text-xl text-gray-600 leading-relaxed mb-12 max-w-2xl mx-auto">Your audience is where you'll store and manage your contacts. Once you add your contacts, you'll be able to send campaigns and track performance.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl mx-auto">
+          <div class="glass-card card-hover rounded-2xl p-10 space-y-4">
+            <div class="space-y-3">
+              <h2 class="text-3xl font-bold text-gray-800">Get Started</h2>
+              <p class="text-gray-600 text-lg">Add your first contacts and begin building your audience.</p>
+            </div>
+            <a href="{% url 'all_contacts' %}" class="block mt-8">
+              <button class="w-full gradient-button text-white px-8 py-4 text-lg font-semibold rounded-xl">
+                Add Contacts
+              </button>
+            </a>
+          </div>
+
+          <div class="glass-card card-hover rounded-2xl p-10 space-y-4">
+            <div class="space-y-3">
+              <h2 class="text-3xl font-bold text-gray-800">Your Audience Overview</h2>
+              <p class="text-gray-600 text-lg">View insights and manage your existing contacts.</p>
+            </div>
+            <a href="{% url 'overview' %}" class="block mt-8">
+              <button class="w-full gradient-button text-white px-8 py-4 text-lg font-semibold rounded-xl">
+                View Overview
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+  function toggleSubmenu(element) {
+    const parent = element.parentElement;
+    const submenu = parent.querySelector('.submenu');
+    submenu.classList.toggle('hidden');
+    element.classList.toggle('active');
+  }
+</script>
+
+</body>
+</html>

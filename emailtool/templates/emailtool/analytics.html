@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Campaign Analytics - {{ campaign.title }}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f6f6f6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .campaign-analytics {
+      background-color: #fff;
+      border-radius: 6px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 40px auto;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    p {
+      color: #555;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      background-color: #eef6f8;
+      border-radius: 4px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      color: #007c89;
+      font-weight: bold;
+    }
+
+    .back-button {
+      margin-top: 20px;
+      display: inline-block;
+      padding: 10px 16px;
+      background-color: #007c89;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    .back-button:hover {
+      background-color: #005f63;
+    }
+  </style>
+</head>
+<body>
+  <div class="campaign-analytics">
+    <h2>Analytics for "{{ campaign.title }}"</h2>
+    <p>Here is a summary of the campaign’s performance:</p>
+    <ul>
+      <li>Opens: {{ campaign.opens|default:"—" }}</li>
+      <li>Clicks: {{ campaign.clicks|default:"—" }}</li>
+      <li>Bounce Rate: {{ campaign.bounce_rate|default:"—" }}%</li>
+      <li>Unsubscribes: {{ campaign.unsubscribes|default:"—" }}</li>
+    </ul>
+    <a class="back-button" href="{% url 'all_campaigns' %}">← Back to All Campaigns</a>
+  </div>
+</body>
+</html>
